@@ -10,14 +10,14 @@ def parse_args():
 
     parser.add_argument(
         "--prediction",
-        default="output.jsonl",
+        default="extract.jsonl",
         type=str,
         help="file that save the prediction dialogs",
     )
 
     parser.add_argument(
         "--output",
-        default="extract.jsonl",
+        default="dataset.jsonl",
         type=str,
         help="file to save the extracted dialogs",
     )
@@ -50,28 +50,48 @@ if __name__ == "__main__":
             keywords[key] = [one_lemma, multi_lemma]
     print(keywords)
 
-    source = []
-    target = []
+    data={'source':[],'target':[]}
     for d in tqdm(dialog):
         flag = 0
         for key, (one, multi) in keywords.items():
             for idx in range(2, len(d["dialog"]), 2):
                 dialog = d["dialog"][idx]
+                flag = 0
                 for o in one:
                     if dialog.find(o) != -1:
                         print('one', dialog.find(o))
                         if idx <= 2:
-                            for i in range(idx):
-                                print(i)
-                                source.append(d["dialog"][i])
+                            data['source'].append(d["dialog"][0])
+                            data['target'].append(d["dialog"][1])
+                            flag = 1
+                            break
                         else:
-                            for i in range(idx-3,idx):
+                            temp = ''
+                            for i in range(idx-4,idx-1):
                                 print(i)
-                                source.append(d["dialog"][i])
-
-                            
-                for m in multi:
-                    if dialog.find(m) != -1:
-                        print(idx)
-                        print('multi', dialog.find(m))
+                                temp = temp + d["dialog"][i] + '\n'
+                            data['source'].append(temp)
+                            data['target'].append(d["dialog"][idx-1])    
+                            flag = 1
+                            break     
+                if flag == 0:                  
+                    for m in multi:
+                        if dialog.find(m) != -1:
+                            print(idx)
+                            print('multi', dialog.find(m))
+                            if idx <= 2:
+                                data['source'].append(d["dialog"][0])
+                                data['target'].append(d["dialog"][1])
+                                break
+                            else:
+                                temp = ''
+                                for i in range(idx-4,idx-1):
+                                    print(i)
+                                    temp = temp + d["dialog"][i] + '\n'
+                                data['source'].append(temp)
+                                data['target'].append(d["dialog"][idx-1])
+                                break
+    with open(args.output, "w") as f:
+        for source, target in zip(data['source'],data['target']):
+            f.write(json.dumps({'source':source,'target':target}) + "\n")
             
