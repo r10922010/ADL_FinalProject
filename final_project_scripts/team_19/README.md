@@ -34,7 +34,7 @@ Anlg : https://drive.google.com/file/d/15ckbKsyq5sMU-RJh0n-mB9NgyW1WhTsF/view
 We consider the sentence before the keyword sentence as our target, and the 3 sentences before the target sentence as our training source. Then, using the dataset to finetune the default "facebook/blenderbot-400M-distill" model.
 
 Our dataset can download from :https://drive.google.com/file/d/1MusfiPaOtVK26t1It8navhhDW2QBn_nF/view?usp=sharing
-Our model can acheive 0.762 hit rate.
+Our model can acheive 0.813 hit rate.
 
 ### training
 The training file is "training.ipynb".
