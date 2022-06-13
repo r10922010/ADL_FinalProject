@@ -125,8 +125,8 @@ if __name__ == "__main__":
             dialog = []
 
             if not args.disable_output_dialog:
-                print(f" dialog id: {index}")
-            for _ in range(5):
+                print(f" dialog id: {index}")  
+            for i in range(6):
                 inputs = simulator_tokenizer(
                     [
                         "</s> <s>".join(
@@ -145,17 +145,17 @@ if __name__ == "__main__":
                     print(f"\033[0;32;49m {'simulator: ': ^11}{text} \033[0;0m")
 
                 # you might need to change this line due to the model you use
-                inputs = bot_tokenizer(
-                    ["</s> <s>".join(dialog[-3:])], return_tensors="pt", truncation=True
-                ).to(device)
-                reply_ids = bot.generate(**inputs)
-                text = bot_tokenizer.batch_decode(reply_ids, skip_special_tokens=True)[
-                    0
-                ].strip()
-                dialog.append(text)
-                if not args.disable_output_dialog:
-                    print(f"\033[0;33;49m {'bot: ': ^11}{text} \033[0;0m")
-
+                if i < 5:
+                    inputs = bot_tokenizer(
+                        ["</s> <s>".join(dialog[-3:])], return_tensors="pt", truncation=True
+                    ).to(device)
+                    reply_ids = bot.generate(**inputs)
+                    text = bot_tokenizer.batch_decode(reply_ids, skip_special_tokens=True)[
+                        0
+                    ].strip()
+                    dialog.append(text)
+                    if not args.disable_output_dialog:
+                        print(f"\033[0;33;49m {'bot: ': ^11}{text} \033[0;0m")
             output.append(dialog)
             if not args.disable_output_dialog:
                 print()
