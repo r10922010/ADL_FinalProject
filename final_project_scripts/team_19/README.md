@@ -25,13 +25,12 @@ python simulator.py --split test --model_name_or_path final_best/ --num_chats 98
 pip install -r requirements.txt
 python3 -m spacy download en_core_web_sm
 ```
-Note: 
-It is ok if you want to use toolkits of different version.
-Please provide your requirements.txt in your submission.
 
 ## Dataset
 
 Our data collect from the training set output of the default simulator.py and Otters+Anlg dataset, which is used in warm-up.
+Otters : https://github.com/karinseve/OTTers
+Anlg : https://drive.google.com/file/d/15ckbKsyq5sMU-RJh0n-mB9NgyW1WhTsF/view
 We consider the sentence before the keyword sentence as our target, and the 3 sentences before the target sentence as our training source. Then, using the dataset to finetune the default "facebook/blenderbot-400M-distill" model.
 
 Our model can acheive 0.762 hit rate.
